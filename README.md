@@ -16,8 +16,6 @@
 1. **Clone the Repository**
 
 ```crmsh
-bash
-Copy code
 git clone <repository-url>
 cd <repository-directory>
 ```
@@ -25,8 +23,6 @@ cd <repository-directory>
 1. **Install Dependencies**
 
 ```mipsasm
-bash
-Copy code
 npm install
 # or
 yarn install
@@ -37,8 +33,6 @@ yarn install
 3. **Run the App**
 
 ```dockerfile
-bash
-Copy code
 npx react-native run-android
 # or
 npx react-native run-ios
@@ -49,8 +43,6 @@ npx react-native run-ios
 Here is a basic example of how to integrate and use the `DemoApp` component in your project:
 
 ```coffeescript
-javascript
-Copy code
 import React from 'react';
 import DemoApp from './DemoApp'; // Adjust the path as necessaryconst App = () => {
   return <DemoApp />;
@@ -64,8 +56,6 @@ export default App;
 ### Imports
 
 ```pgsql
-javascript
-Copy code
 import { View, Text } from 'react-native';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -76,8 +66,6 @@ import { useAddNewPostMutation, useDeletePostMutation, useGetProductDataByIdQuer
 ### Functional Component
 
 ```javascript
-
-Copy code
 const DemoApp = () => {
   const dispatch = useDispatch();
   const products = useSelector(state => state);
