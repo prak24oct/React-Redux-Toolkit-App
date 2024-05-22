@@ -1,79 +1,151 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Documentation
 
-# Getting Started
+# React Native App to demonstrate react redux state management using rtq query for data fetching
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+`DemoApp` is a React Native component that showcases the use of Redux for state management and RTK Query for data fetching and mutations. This example demonstrates fetching product data, adding a new product, and deleting a product through API calls.
 
-## Step 1: Start the Metro Server
+## Table of Contents
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+*   [Installation](https://chatgpt.com/c/ef603981-5ec9-4570-8ba0-1a232541a4e9#installation)
+*   [Usage](https://chatgpt.com/c/ef603981-5ec9-4570-8ba0-1a232541a4e9#usage)
+*   [Code Explanation](https://chatgpt.com/c/ef603981-5ec9-4570-8ba0-1a232541a4e9#code-explanation)
+*   [Dependencies](https://chatgpt.com/c/ef603981-5ec9-4570-8ba0-1a232541a4e9#dependencies)
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## Installation
 
-```bash
-# using npm
-npm start
+1. **Clone the Repository**
 
-# OR using Yarn
-yarn start
+```crmsh
+bash
+Copy code
+git clone <repository-url>
+cd <repository-directory>
 ```
 
-## Step 2: Start your Application
+1. **Install Dependencies**
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```mipsasm
+bash
+Copy code
+npm install
+# or
+yarn install
 ```
 
-### For iOS
+1. **Setup Redux Store**
+2. Ensure your Redux store is configured to include the `fetchProducts` reducer and RTK Query services from `./services/GetApiCall`.
+3. **Run the App**
 
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+```dockerfile
+bash
+Copy code
+npx react-native run-android
+# or
+npx react-native run-ios
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## Usage
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+Here is a basic example of how to integrate and use the `DemoApp` component in your project:
 
-## Step 3: Modifying your App
+```coffeescript
+javascript
+Copy code
+import React from 'react';
+import DemoApp from './DemoApp'; // Adjust the path as necessaryconst App = () => {
+  return <DemoApp />;
+};
 
-Now that you have successfully run the app, let's modify it.
+export default App;
+```
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+## Code Explanation
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+### Imports
 
-## Congratulations! :tada:
+```pgsql
+javascript
+Copy code
+import { View, Text } from 'react-native';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from './ProductSlice';
+import { useAddNewPostMutation, useDeletePostMutation, useGetProductDataByIdQuery, useGetProductDataQuery } from './services/GetApiCall';
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+### Functional Component
 
-### Now what?
+```javascript
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+Copy code
+const DemoApp = () => {
+  const dispatch = useDispatch();
+  const products = useSelector(state => state);
+  console.log(JSON.stringify(products));
 
-# Troubleshooting
+  const { data, isError, isFetching, isSuccess } = useGetProductDataQuery();
+  console.log(`data:-> ${data}`); 
+  console.log(`isError:-> ${isError}`); 
+  console.log(`isFetching:-> ${isFetching}`); 
+  console.log(`isSuccess:-> ${isSuccess}`);
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+  const { data: productData, isError: productError, isFetching: productFetching, isSuccess: productSuccess } = useGetProductDataByIdQuery(1);
+  console.log(`data:-> ${JSON.stringify(productData)}`);
 
-# Learn More
+  const [addPost] = useAddNewPostMutation();
+  const addNewPost = async () => {
+    const res = await addPost({
+      title: 'test product',
+      price: 13.5,
+      description: 'A new branded test product.',
+      image: 'https://i.pravatar.cc',
+      category: 'electronics'
+    });
 
-To learn more about React Native, take a look at the following resources:
+    console.log(res);
+  };
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+  const [deleteData] = useDeletePostMutation();
+  const deletePost = async () => {
+    const res = await deleteData('6');
+    console.log(res);
+  };
+
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Textstyle={{ padding: 20, borderWidth: 0.5 }}
+        onPress={() => {
+          deletePost();
+        }}>
+        Delete Data
+      </Text></View>
+  );
+};
+
+export default DemoApp;
+```
+
+### Explanation
+
+1. **State Management**:
+    *   `dispatch` is used to dispatch actions to the Redux store.
+    *   `products` selects the state from the Redux store.
+2. **Data Fetching**:
+    *   `useGetProductDataQuery` fetches all product data.
+    *   `useGetProductDataByIdQuery` fetches product data by ID.
+3. **Mutations**:
+    *   `useAddNewPostMutation` adds a new product.
+    *   `useDeletePostMutation` deletes a product by ID.
+4. **UI**:
+    *   The component renders a `View` with a `Text` element. When the `Text` element is pressed, it triggers the `deletePost` function to delete a product.
+
+## Dependencies
+
+*   `react-native`
+*   `react`
+*   `react-redux`
+*   `@reduxjs/toolkit`
+*   `@reduxjs/toolkit/query/react`
+
+## Conclusion
+
+`DemoApp` is a basic example demonstrating the integration of Redux and RTK Query in a React Native application. It can be customized further based on the requirements of your project.
