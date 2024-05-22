@@ -1,5 +1,3 @@
-# Documentation
-
 # React Native App to demonstrate react redux state management using rtq query for data fetching
 
 `DemoApp` is a React Native component that showcases the use of Redux for state management and RTK Query for data fetching and mutations. This example demonstrates fetching product data, adding a new product, and deleting a product through API calls.
